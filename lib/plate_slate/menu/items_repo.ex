@@ -63,6 +63,14 @@ defmodule PlateSlate.Menu.ItemsRepo do
     |> where([i, tag: t], ilike(t.name, ^"%#{tag_name}"))
   end
 
+  defp compose_query({:added_before, date}, query) do
+    where(query, [i], i.added_on <= ^date)
+  end
+
+  defp compose_query({:added_after, date}, query) do
+    where(query, [i], i.added_on >= ^date)
+  end
+
   defp compose_query(_, query), do: query
 end
 

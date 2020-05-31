@@ -6,6 +6,8 @@ defmodule PlateSlate.Menu.Category do
     field :description, :string
     field :name, :string
 
+    has_many :items, PlateSlate.Menu.Item
+
     timestamps()
   end
 

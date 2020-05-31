@@ -1,4 +1,4 @@
-defmodule PlateSlate.Menu.ItemsRepo do
+defmodule PlateSlate.Menu.ItemRepo do
   import Ecto.Query
 
   alias PlateSlate.Repo
@@ -37,6 +37,14 @@ defmodule PlateSlate.Menu.ItemsRepo do
 
   def change(%Item{} = item) do
     Item.changeset(item, %{})
+  end
+
+  def search(term) do
+    pattern = "%#{term}%"
+
+    (from i in Item)
+    |> where([i], ilike(i.name, ^pattern) or ilike(i.description, ^pattern))
+    |> Repo.all()
   end
 
   defp compose_query({:name, name}, query) do

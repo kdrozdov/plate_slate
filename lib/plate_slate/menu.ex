@@ -24,4 +24,3 @@ defmodule PlateSlate.Menu do
     end)
   end
 end
-

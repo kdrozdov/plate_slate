@@ -12,8 +12,7 @@ defmodule PlateSlate.Menu.Item do
 
     belongs_to :category, Category
 
-    many_to_many :tags, ItemTag,
-      join_through: "items_taggings"
+    many_to_many :tags, ItemTag, join_through: "items_taggings"
 
     timestamps()
   end
@@ -24,5 +23,6 @@ defmodule PlateSlate.Menu.Item do
     |> cast(attrs, [:name, :description, :price, :added_on])
     |> validate_required([:name, :price])
     |> foreign_key_constraint(:category)
+    |> unique_constraint(:name)
   end
 end

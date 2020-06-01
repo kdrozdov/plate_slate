@@ -3,6 +3,21 @@ defmodule PlateSlateWeb.Schema.MenuTypes do
 
   alias PlateSlateWeb.Resolvers
 
+  interface :search_result do
+    field :name, :string
+
+    resolve_type(fn
+      %PlateSlate.Menu.Item{}, _ ->
+        :menu_item
+
+      %PlateSlate.Menu.Category{}, _ ->
+        :category
+
+      _, _ ->
+        nil
+    end)
+  end
+
   @desc "Filtering options for the menu item list"
   input_object :menu_item_filter do
     @desc "Matching a name"
@@ -22,30 +37,33 @@ defmodule PlateSlateWeb.Schema.MenuTypes do
   end
 
   object :menu_item do
+    interfaces([:search_result])
     field :id, :id
     field :name, :string
+    field :price, :decimal
     field :description, :string
     field :added_on, :date
   end
 
+  object :menu_item_result do
+    field :menu_item, :menu_item
+    field :errors, list_of(:input_error)
+  end
+
   object :category do
+    interfaces([:search_result])
     field :name, :string
     field :description, :string
+
     field :items, list_of(:menu_item) do
-      resolve &Resolvers.Menu.items_for_category/3
+      resolve(&Resolvers.Menu.items_for_category/3)
     end
   end
 
-  union :search_result do
-    types [:menu_item, :category]
-    resolve_type fn
-      %PlateSlate.Menu.Item{}, _ ->
-        :menu_item
-      %PlateSlate.Menu.Category{}, _ ->
-        :category
-      _, _ ->
-        nil
-    end
+  input_object :menu_item_input do
+    field :name, non_null(:string)
+    field :description, :string
+    field :price, non_null(:decimal)
+    field :category_id, non_null(:id)
   end
 end
-

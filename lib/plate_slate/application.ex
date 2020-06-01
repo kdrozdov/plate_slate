@@ -11,9 +11,10 @@ defmodule PlateSlate.Application do
       # Start the Ecto repository
       PlateSlate.Repo,
       # Start the endpoint when the application starts
-      PlateSlateWeb.Endpoint
+      PlateSlateWeb.Endpoint,
       # Starts a worker by calling: PlateSlate.Worker.start_link(arg)
       # {PlateSlate.Worker, arg},
+      {Absinthe.Subscription, PlateSlateWeb.Endpoint}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

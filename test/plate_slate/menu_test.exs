@@ -6,8 +6,18 @@ defmodule PlateSlate.MenuTest do
   describe "items" do
     alias PlateSlate.Menu.Item
 
-    @valid_attrs %{added_on: ~D[2010-04-17], description: "some description", name: "some name", price: "120.5"}
-    @update_attrs %{added_on: ~D[2011-05-18], description: "some updated description", name: "some updated name", price: "456.7"}
+    @valid_attrs %{
+      added_on: ~D[2010-04-17],
+      description: "some description",
+      name: "some name",
+      price: "120.5"
+    }
+    @update_attrs %{
+      added_on: ~D[2011-05-18],
+      description: "some updated description",
+      name: "some updated name",
+      price: "456.7"
+    }
     @invalid_attrs %{added_on: nil, description: nil, name: nil, price: nil}
 
     def item_fixture(attrs \\ %{}) do

@@ -7,9 +7,8 @@ defmodule PlateSlate.Menu.CategoryRepo do
   def search(term) do
     pattern = "%#{term}%"
 
-    (from i in Category)
+    from(i in Category)
     |> where([i], ilike(i.name, ^pattern) or ilike(i.description, ^pattern))
     |> Repo.all()
   end
-
 end

@@ -5,12 +5,13 @@ defmodule PlateSlate.Menu.ItemRepo do
   alias PlateSlate.Menu.Item
 
   def list(args \\ %{}) do
-    query = from i in Item
+    query = from(i in Item)
 
     args
     |> Enum.reduce(query, fn
       {:order, order}, query ->
         query |> order_by({^order, :name})
+
       {:filter, filter}, query ->
         filter |> Enum.reduce(query, &compose_query/2)
     end)
@@ -42,7 +43,7 @@ defmodule PlateSlate.Menu.ItemRepo do
   def search(term) do
     pattern = "%#{term}%"
 
-    (from i in Item)
+    from(i in Item)
     |> where([i], ilike(i.name, ^pattern) or ilike(i.description, ^pattern))
     |> Repo.all()
   end
@@ -81,4 +82,3 @@ defmodule PlateSlate.Menu.ItemRepo do
 
   defp compose_query(_, query), do: query
 end
-

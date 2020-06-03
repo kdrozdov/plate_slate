@@ -47,7 +47,8 @@ defmodule PlateSlate.MixProject do
       {:absinthe_plug, "~> 1.5"},
       {:absinthe_phoenix, "~> 1.5"},
       {:absinthe_relay, "~> 1.4.0-rc or ~> 1.4"},
-      {:decimal, "~> 1.8"}
+      {:decimal, "~> 1.8"},
+      {:argon2_elixir, "~> 2.3"}
     ]
   end
 

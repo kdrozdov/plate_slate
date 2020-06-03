@@ -19,7 +19,7 @@ defmodule PlateSlate.Ordering.OrderRepo do
   end
 
   def update(%Order{} = order, attrs) do
-    attrs = Map.update(attrs, :items, [], &build_items/1)
+    # attrs = Map.update(attrs, :items, [], &build_items/1)
 
     order
     |> Order.changeset(attrs)
@@ -36,7 +36,7 @@ defmodule PlateSlate.Ordering.OrderRepo do
 
   defp build_items(items) do
     for item <- items do
-      menu_item = PlateSlate.Menu.get_item!(item.menu_item_id)
+      menu_item = PlateSlate.Ordering.MenuItemRepo.get!(item.menu_item_id)
       %{name: menu_item.name, quantity: item.quantity, price: menu_item.price}
     end
   end

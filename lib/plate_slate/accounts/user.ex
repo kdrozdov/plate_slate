@@ -5,8 +5,10 @@ defmodule PlateSlate.Accounts.User do
   schema "users" do
     field :email, :string
     field :name, :string
-    field :password, :string
+    field :encrypted_password, :string
     field :role, :string
+
+    field :password, :string, virtual: true
 
     timestamps()
   end
@@ -26,9 +28,9 @@ defmodule PlateSlate.Accounts.User do
       {:ok, password} ->
         hashed_password = Argon2.hash_pwd_salt(password)
         put_change(changeset, :encrypted_password, hashed_password)
+
       _ ->
         changeset
     end
   end
-
 end

@@ -1,4 +1,4 @@
-defmodule PlateSlate.Users do
+defmodule PlateSlate.Accounts do
   @moduledoc """
   The User context.
   """
@@ -17,6 +17,7 @@ defmodule PlateSlate.Users do
 
   def change_user(%User{} = account), do: UserRepo.change(account)
 
+  def get_by(attrs), do: UserRepo.get_by(attrs)
+
   defdelegate authenticate(role, email, password), to: Authentication
 end
-

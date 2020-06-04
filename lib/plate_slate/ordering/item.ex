@@ -13,6 +13,4 @@ defmodule PlateSlate.Ordering.Item do
     |> cast(attrs, [:price, :name, :quantity])
     |> validate_required([:price, :name, :quantity])
   end
-
 end
-

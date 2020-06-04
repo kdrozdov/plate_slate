@@ -9,7 +9,7 @@ defmodule PlateSlate.Menu.Item do
     field :description, :string
     field :name, :string
     field :price, :decimal
-    field :allergy_info, {:array, :map}
+    field :allergy_info, {:array, :map}, default: []
 
     belongs_to :category, Category
 
@@ -27,5 +27,3 @@ defmodule PlateSlate.Menu.Item do
     |> unique_constraint(:name)
   end
 end
-
-

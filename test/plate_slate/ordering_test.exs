@@ -52,17 +52,19 @@ defmodule PlateSlate.OrderingTest do
         state: "created",
         items: [
           %{menu_item_id: chai.id, quantity: 1},
-          %{menu_item_id: fries.id, quantity: 2},
+          %{menu_item_id: fries.id, quantity: 2}
         ]
       }
 
       assert {:ok, %Order{} = order} = Ordering.create_order(attrs)
-      assert Enum.map(order.items,
-        &Map.take(&1, [:name, :quantity, :price])
-      ) == [
-        %{name: "Masala Chai", quantity: 1, price: chai.price},
-        %{name: "French Fries", quantity: 2, price: fries.price},
-      ]
+
+      assert Enum.map(
+               order.items,
+               &Map.take(&1, [:name, :quantity, :price])
+             ) == [
+               %{name: "Masala Chai", quantity: 1, price: chai.price},
+               %{name: "French Fries", quantity: 2, price: fries.price}
+             ]
 
       assert order.state == "created"
     end

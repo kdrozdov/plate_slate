@@ -16,7 +16,7 @@ defmodule PlateSlateWeb.Schema.Subscription.NewOrderTest do
   }
   """
   test "new orders can be subscribed to", %{socket: socket} do
-    ref = push_doc socket, @subscription
+    ref = push_doc(socket, @subscription)
     assert_reply ref, :ok, %{subscriptionId: subscription_id}
 
     order_input = %{
@@ -26,7 +26,7 @@ defmodule PlateSlateWeb.Schema.Subscription.NewOrderTest do
       ]
     }
 
-    ref = push_doc socket, @mutation, variables: %{"input" => order_input}
+    ref = push_doc(socket, @mutation, variables: %{"input" => order_input})
     assert_reply ref, :ok, reply
     assert %{data: %{"placeOrder" => %{"order" => %{"id" => _}}}} = reply
 
@@ -35,6 +35,7 @@ defmodule PlateSlateWeb.Schema.Subscription.NewOrderTest do
       result: %{data: %{"newOrder" => %{"customerNumber" => 24}}},
       subscriptionId: subscription_id
     }
+
     assert_push "subscription:data", push
     assert expected == push
   end

@@ -9,8 +9,7 @@ defmodule PlateSlate.Accounts.UserRepo do
   def get!(id), do: Repo.get!(User, id)
 
   def get_by(attrs) do
-    %User{}
-    |> Repo.get_by(attrs)
+    Repo.get_by(User, attrs)
   end
 
   def create(attrs \\ %{}) do
@@ -30,7 +29,6 @@ defmodule PlateSlate.Accounts.UserRepo do
   end
 
   def change(%User{} = user) do
-    Order.changeset(user, %{})
+    User.changeset(user, %{})
   end
 end
-

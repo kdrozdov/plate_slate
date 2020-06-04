@@ -12,6 +12,7 @@ defmodule PlateSlate.Repo.Migrations.CreateMenuTagTaggings do
         changeset
     end
   end
+
   use Ecto.Migration
 
   def change do

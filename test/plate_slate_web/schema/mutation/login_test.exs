@@ -10,7 +10,7 @@ defmodule PlateSlateWeb.Schema.Mutation.LoginEmployeeTest do
   }
   """
   test "creating an employee session" do
-    {:ok, user} = Factory.create_user("employee")
+    user = Factory.create_user("employee")
 
     response =
       post(build_conn(), "/api", %{

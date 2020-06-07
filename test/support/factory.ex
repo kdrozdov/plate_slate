@@ -9,6 +9,7 @@ defmodule Factory do
       role: role
     }
 
-    PlateSlate.Accounts.create_user(params)
+    {:ok, user} = PlateSlate.Accounts.create_user(params)
+    user
   end
 end

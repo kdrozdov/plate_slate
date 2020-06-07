@@ -16,4 +16,6 @@ defmodule PlateSlate.Ordering do
   def delete_order(%Order{} = order), do: OrderRepo.delete(order)
 
   def change_order(%Order{} = order), do: OrderRepo.change(order)
+
+  def customer_orders(customer_id), do: OrderRepo.customer_orders(customer_id)
 end

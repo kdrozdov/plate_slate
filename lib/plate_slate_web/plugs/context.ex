@@ -6,21 +6,23 @@ defmodule PlateSlateWeb.Plugs.Context do
 
   def call(conn, _) do
     context = build_context(conn)
-    IO.inspect(context: context)
     Absinthe.Plug.put_options(conn, context: context)
   end
 
   defp build_context(conn) do
     with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
          {:ok, data} <- PlateSlateWeb.Authentication.verify(token),
-         {:ok, user} <- get_user(data) do
+         user <- get_user(data) do
       %{current_user: user}
     else
       _ -> %{}
     end
   end
 
-  defp get_user(%{id: _id, role: _role} = params) do
-    PlateSlate.Accounts.get_by(params)
+  defp get_user(%{id: id, role: role}) do
+    PlateSlate.Accounts.get_by(%{
+      id: id,
+      role: to_string(role)
+    })
   end
 end

@@ -3,6 +3,7 @@ defmodule PlateSlate.Ordering.Order do
   import Ecto.Changeset
 
   schema "orders" do
+    field :customer_id, :integer
     field :customer_number, :integer
     field :ordered_at, :utc_datetime
     field :state, :string, default: "created"
@@ -15,7 +16,7 @@ defmodule PlateSlate.Ordering.Order do
   @doc false
   def changeset(order, attrs) do
     order
-    |> cast(attrs, [:customer_number, :ordered_at, :state])
+    |> cast(attrs, [:customer_id, :customer_number, :ordered_at, :state])
     |> cast_embed(:items)
   end
 end

@@ -34,6 +34,12 @@ defmodule PlateSlate.Ordering.OrderRepo do
     Order.changeset(order, %{})
   end
 
+  def customer_orders(customer_id) do
+    Order
+    |> where(customer_id: ^customer_id)
+    |> Repo.all()
+  end
+
   defp build_items(items) do
     for item <- items do
       menu_item = PlateSlate.Ordering.MenuItemRepo.get!(item.menu_item_id)

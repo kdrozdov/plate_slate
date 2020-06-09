@@ -23,4 +23,15 @@ defmodule PlateSlate.Menu do
       apply(repo, :search, [term])
     end)
   end
+
+  def get_category!(id), do: CategoryRepo.get!(id)
+
+  def get_category_by(params \\ %{}), do: CategoryRepo.get_by(params)
+
+  def data() do
+    Dataloader.Ecto.new(PlateSlate.Repo, query: &query/2)
+  end
+
+  def query(Item, args), do: ItemRepo.list_query(args)
+  def query(queryable, _), do: queryable
 end

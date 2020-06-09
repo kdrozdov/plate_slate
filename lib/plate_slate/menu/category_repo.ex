@@ -11,4 +11,8 @@ defmodule PlateSlate.Menu.CategoryRepo do
     |> where([i], ilike(i.name, ^pattern) or ilike(i.description, ^pattern))
     |> Repo.all()
   end
+
+  def get!(id), do: Repo.get!(Category, id)
+
+  def get_by(params \\ %{}), do: Repo.get_by(Category, params)
 end

@@ -5,17 +5,18 @@ defmodule PlateSlate.Menu.ItemRepo do
   alias PlateSlate.Menu.Item
 
   def list(args \\ %{}) do
-    query = from(i in Item)
+    list_query(args)
+    |> Repo.all()
+  end
 
-    args
-    |> Enum.reduce(query, fn
+  def list_query(args) do
+    Enum.reduce(args, Item, fn
       {:order, order}, query ->
         query |> order_by({^order, :name})
 
       {:filter, filter}, query ->
         filter |> Enum.reduce(query, &compose_query/2)
     end)
-    |> Repo.all()
   end
 
   def get!(id), do: Repo.get!(Item, id)

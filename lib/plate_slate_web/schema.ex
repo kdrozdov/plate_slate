@@ -3,19 +3,45 @@ defmodule PlateSlateWeb.Schema do
 
   alias PlateSlateWeb.Resolvers
   alias PlateSlateWeb.Schema.Middleware
+  alias PlateSlate.Menu
 
-  def middleware(middleware, field, %{identifier: :allergy_info} = object) do
-    new_middleware = {Absinthe.Middleware.MapGet, to_string(field.identifier)}
-
-    middleware
-    |> Absinthe.Schema.replace_default(new_middleware, field, object)
+  def dataloader() do
+    Dataloader.new
+    |> Dataloader.add_source(Menu, Menu.data())
   end
 
-  def middleware(middleware, _field, %{identifier: :mutation}) do
+  def context(ctx) do
+    Map.put(ctx, :loader, dataloader())
+  end
+
+  def plugins do
+    [Absinthe.Middleware.Dataloader | Absinthe.Plugin.defaults]
+  end
+
+  def middleware(middleware, field, object) do
+    middleware
+    |> apply(:errors, field, object)
+    |> apply(:get_string, field, object)
+    |> apply(:debug, field, object)
+  end
+
+  defp apply(middleware, :errors, _field, %{identifier: :mutation}) do
     middleware ++ [Middleware.ChangesetErrors]
   end
 
-  def middleware(middleware, _field, _object) do
+  defp apply([], :get_string, field, %{identifier: :allergy_info}) do
+    [{Absinthe.Middleware.MapGet, to_string(field.identifier)}]
+  end
+
+  defp apply(middleware, :debug, _field, _object) do
+    if System.get_env("DEBUG") do
+      [{Middleware.Debug, :start}] ++ middleware
+    else
+      middleware
+    end
+  end
+
+  defp apply(middleware, _, _, _) do
     middleware
   end
 

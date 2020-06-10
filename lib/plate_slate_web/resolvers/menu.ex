@@ -33,4 +33,3 @@ defmodule PlateSlateWeb.Resolvers.Menu do
     end
   end
 end
-

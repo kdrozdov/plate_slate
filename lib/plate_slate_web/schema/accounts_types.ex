@@ -31,11 +31,12 @@ defmodule PlateSlateWeb.Schema.AccountsTypes do
     interface(:user)
     field :email, :string
     field :name, :string
+
     field :orders, list_of(:order) do
-      resolve fn customer, _, _ ->
+      resolve(fn customer, _, _ ->
         orders = PlateSlate.Ordering.customer_orders(customer.id)
         {:ok, orders}
-      end
+      end)
     end
   end
 end

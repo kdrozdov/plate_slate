@@ -6,6 +6,7 @@ defmodule PlateSlateWeb.Resolvers.Ordering do
       case context[:current_user] do
         %{role: "customer", id: id} ->
           Map.put(place_order_input, :customer_id, id)
+
         _ ->
           place_order_input
       end

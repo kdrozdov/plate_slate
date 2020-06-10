@@ -60,6 +60,7 @@ defmodule PlateSlateWeb.Schema.Mutation.CreateMenuTest do
       "price" => "5.75",
       "categoryId" => category_id
     }
+
     user = Factory.create_user("employee")
     conn = build_conn() |> auth_user(user)
 

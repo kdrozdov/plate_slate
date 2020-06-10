@@ -63,9 +63,9 @@ defmodule PlateSlateWeb.Schema.MenuTypes do
     field :description, :string
 
     field :items, list_of(:menu_item) do
-      arg :filter, :menu_item_filter
-      arg :order, type: :sort_order, default_value: :asc
-      resolve dataloader(PlateSlate.Menu, :items)
+      arg(:filter, :menu_item_filter)
+      arg(:order, type: :sort_order, default_value: :asc)
+      resolve(dataloader(PlateSlate.Menu, :items))
     end
   end
 

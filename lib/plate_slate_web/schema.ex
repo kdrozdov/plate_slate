@@ -6,7 +6,7 @@ defmodule PlateSlateWeb.Schema do
   alias PlateSlate.Menu
 
   def dataloader() do
-    Dataloader.new
+    Dataloader.new()
     |> Dataloader.add_source(Menu, Menu.data())
   end
 
@@ -15,7 +15,7 @@ defmodule PlateSlateWeb.Schema do
   end
 
   def plugins do
-    [Absinthe.Middleware.Dataloader | Absinthe.Plugin.defaults]
+    [Absinthe.Middleware.Dataloader | Absinthe.Plugin.defaults()]
   end
 
   def middleware(middleware, field, object) do
@@ -63,21 +63,21 @@ defmodule PlateSlateWeb.Schema do
     end
 
     field :me, :user do
-      middleware Middleware.Authorize, :any
-      resolve &Resolvers.Accounts.me/3
+      middleware(Middleware.Authorize, :any)
+      resolve(&Resolvers.Accounts.me/3)
     end
   end
 
   mutation do
     field :create_menu_item, :menu_item_result do
       arg(:input, non_null(:menu_item_input))
-      middleware Middleware.Authorize, "employee"
+      middleware(Middleware.Authorize, "employee")
       resolve(&Resolvers.Menu.create_item/3)
     end
 
     field :place_order, :order_result do
       arg(:input, non_null(:place_order_input))
-      middleware Middleware.Authorize, :any
+      middleware(Middleware.Authorize, :any)
       resolve(&Resolvers.Ordering.place_order/3)
     end
 
@@ -96,11 +96,12 @@ defmodule PlateSlateWeb.Schema do
       arg(:password, non_null(:string))
       arg(:role, non_null(:role))
       resolve(&Resolvers.Accounts.login/3)
-      middleware fn res, _ ->
+
+      middleware(fn res, _ ->
         with %{value: %{user: user}} <- res do
           %{res | context: Map.put(res.context, :current_user, user)}
         end
-      end
+      end)
     end
   end
 
@@ -129,8 +130,10 @@ defmodule PlateSlateWeb.Schema do
         case context[:current_user] do
           %{role: "customer", id: id} ->
             {:ok, topic: id}
+
           %{role: "employee"} ->
             {:ok, topic: "*"}
+
           _ ->
             {:error, "unauthorized"}
         end
